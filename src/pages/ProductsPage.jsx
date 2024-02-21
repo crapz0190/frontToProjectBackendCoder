@@ -3,12 +3,16 @@ import { useEffect, useState } from "react";
 import { UseProducts } from "../context/ProductsContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import ItemPage from "../components/ItemPage";
+import { UseAuth } from "../context/AuthContext";
 
 const ProductsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const initialPageNumber = Number(queryParams.get("page")) || 1; // Obtener el número de página del query string o establecerlo como 1 por defecto
+
+  const { userRole } = UseAuth();
+  // console.log(userRole);
 
   const {
     products,
@@ -48,7 +52,10 @@ const ProductsPage = () => {
   };
 
   return (
-    <div className="pt-20 container">
+    <div className="pt-28 container">
+      <div className="h-10 px-10 grid items-center place-items-end">
+        {userRole && <span className="font-semibold">Role: {userRole}</span>}
+      </div>
       {tokenError.status === 401 ? (
         <div>nada para mostrar</div>
       ) : (

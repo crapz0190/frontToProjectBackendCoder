@@ -1,18 +1,24 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom";
 import { UseProducts } from "../context/ProductsContext";
+import { UseAuth } from "../context/AuthContext";
 
 const ItemsUpdateProducts = ({ product }) => {
   const navigate = useNavigate();
 
   const { dataProductId } = UseProducts();
+  const { userRole } = UseAuth();
 
   const firstThumbnail =
     product.thumbnails.length > 0 ? product.thumbnails[0] : null;
 
   const onSubmit = async () => {
     await dataProductId(product._id);
-    navigate(`/admin/products/configure-product/${product._id}`);
+    if (userRole === "admin") {
+      navigate(`/admin/products/configure-product/${product._id}`);
+    } else if (userRole === "premium") {
+      navigate(`/premium/products/configure-product/${product._id}`);
+    }
   };
 
   return (

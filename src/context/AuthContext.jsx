@@ -7,6 +7,9 @@ import {
   forgotPassword,
   resetPassword,
   logoutRequest,
+  saveDocuments,
+  allUsersRequest,
+  userChangeRole,
 } from "../api/auth";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
@@ -25,12 +28,31 @@ export const UseAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [allUser, setAllUser] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState(null);
 
   // ---------- USERS ---------
+
+  const changeRole = async (uid) => {
+    try {
+      await userChangeRole(uid);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const allUsersReq = async () => {
+    try {
+      const usersReq = await allUsersRequest();
+      setAllUser(usersReq);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const signup = async (values) => {
     try {
@@ -58,6 +80,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setUser(login.data);
       setUserRole(login.data.payload.role);
+      setUserId(login.data.payload._id);
 
       const encryptedRole = CryptoJS.AES.encrypt(
         login.data.payload.role,
@@ -106,6 +129,14 @@ export const AuthProvider = ({ children }) => {
       setUserRole(null); // Limpiar el rol de usuario
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
+    }
+  };
+
+  const infoDocuments = async (pid, obj) => {
+    try {
+      await saveDocuments(pid, obj);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -180,6 +211,11 @@ export const AuthProvider = ({ children }) => {
         errors,
         loading,
         userRole,
+        infoDocuments,
+        userId,
+        allUsersReq,
+        allUser,
+        changeRole,
       }}
     >
       {children}

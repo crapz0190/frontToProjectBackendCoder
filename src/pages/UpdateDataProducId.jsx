@@ -3,10 +3,13 @@ import { UseProducts } from "../context/ProductsContext";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { UseAuth } from "../context/AuthContext";
 
 const UpdateDataProducId = () => {
   const { pid } = useParams();
   const navigate = useNavigate();
+
+  const { userRole } = UseAuth();
   const {
     register,
     handleSubmit,
@@ -42,7 +45,11 @@ const UpdateDataProducId = () => {
         text: "Un producto ha sido actualizado.",
         icon: "success",
       }).then(() => {
-        navigate("/admin/products/update-products");
+        if (userRole === "admin") {
+          navigate("/admin/products/update-products");
+        } else if (userRole === "premium") {
+          navigate("/premium/products/update-products");
+        }
       });
     }
   });

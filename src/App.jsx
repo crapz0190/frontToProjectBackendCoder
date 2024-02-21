@@ -16,6 +16,9 @@ import UpdateDataProducId from "./pages/UpdateDataProducId";
 import Unauthorized from "./pages/Unauthorized";
 import ProtectedRouteUser from "./pages/ProtectedRouteUser";
 import ConfigureImages from "./pages/ConfigureImages";
+import UserDocuments from "./pages/UserDocuments";
+import ConfigureUsers from "./pages/ConfigureUsers";
+import ProtectedRoutePremium from "./pages/ProtectedRoutePremium";
 
 function App() {
   return (
@@ -72,9 +75,40 @@ function App() {
                   path="/admin/products/configure-images/:pid"
                   element={<ConfigureImages />}
                 />
+                <Route
+                  path="/admin/configure-users"
+                  element={<ConfigureUsers />}
+                />
+              </Route>
+              <Route element={<ProtectedRoutePremium />}>
+                <Route path="/premium/products" element={<ProductsPage />} />
+                <Route
+                  path="/premium/products/add-products"
+                  element={<AddProducts />}
+                />
+                <Route
+                  path="/premium/products/update-products"
+                  element={<UpdateProducts />}
+                />
+                <Route
+                  path="/premium/products/configure-product/:pid"
+                  element={<SettingProducts />}
+                />
+                <Route
+                  path="/premium/products/update-data-product-by-id/:pid"
+                  element={<UpdateDataProducId />}
+                />
+                <Route
+                  path="/premium/products/configure-images/:pid"
+                  element={<ConfigureImages />}
+                />
               </Route>
               <Route element={<ProtectedRouteUser />}>
                 <Route path="/users/products" element={<ProductsPage />} />
+                <Route
+                  path="/users/:uid/documents"
+                  element={<UserDocuments />}
+                />
               </Route>
             </Routes>
           </main>

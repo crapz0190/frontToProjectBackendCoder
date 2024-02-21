@@ -24,6 +24,8 @@ const LoginPage = () => {
         navigate("/users/products");
       } else if (userRole === "admin") {
         navigate("/admin/products");
+      } else if (userRole === "premium") {
+        navigate("/premium/products");
       }
     }
   }, [isAuthenticated, userRole]);

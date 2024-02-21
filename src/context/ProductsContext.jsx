@@ -93,7 +93,7 @@ export function ProductProvider({ children }) {
     try {
       await addImgsRequest(pid, images);
     } catch (error) {
-      console.log(error);
+      setErrorDataProd(error);
     }
   };
 

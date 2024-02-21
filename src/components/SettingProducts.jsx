@@ -4,12 +4,15 @@ import { UseProducts } from "../context/ProductsContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { UseAuth } from "../context/AuthContext";
 
 const SettingProducts = () => {
   const { pid } = useParams();
   const { dataUpdate } = UseProducts();
   const [formData, setFormData] = useState(null);
   const [mainImage, setMainImage] = useState(null);
+
+  const { userRole } = UseAuth();
 
   useEffect(() => {
     // Obtener datos guardados del almacenamiento local al montar el componente
@@ -26,8 +29,6 @@ const SettingProducts = () => {
       setFormData(dataUpdate);
     }
   }, [dataUpdate]);
-
-  // console.log("datos-del-producto --> ", formData ? formData.thumbnails : "");
 
   const { deleteProductAndImages, dataProductId } = UseProducts();
   const navigate = useNavigate();
@@ -49,7 +50,11 @@ const SettingProducts = () => {
         text: "Un producto ha sido eliminado.",
         icon: "success",
       }).then(() => {
-        navigate("/admin/products/update-products");
+        if (userRole === "admin") {
+          navigate("/admin/products/update-products");
+        } else if (userRole === "premium") {
+          navigate("/premium/products/update-products");
+        }
       });
     }
   });
@@ -58,12 +63,20 @@ const SettingProducts = () => {
     const confirmed = await showUpdateConfirmation();
     if (confirmed) {
       dataProductId(formData._id);
-      navigate(`/admin/products/update-data-product-by-id/${formData._id}`);
+      if (userRole === "admin") {
+        navigate(`/admin/products/update-data-product-by-id/${formData._id}`);
+      } else if (userRole === "premium") {
+        navigate(`/premium/products/update-data-product-by-id/${formData._id}`);
+      }
     }
   };
 
   const onSubmit3 = async () => {
-    navigate(`/admin/products/configure-images/${pid}`);
+    if (userRole === "admin") {
+      navigate(`/admin/products/configure-images/${pid}`);
+    } else if (userRole === "premium") {
+      navigate(`/premium/products/configure-images/${pid}`);
+    }
   };
 
   const showDeleteConfirmation = async () => {
