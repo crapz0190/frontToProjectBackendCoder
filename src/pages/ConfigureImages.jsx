@@ -170,7 +170,7 @@ const ConfigureImages = () => {
         </div>
         <button
           type="submit"
-          className="text-white text-center jus w-40 capitalize px-5 h-10 rounded-md duration-300 bg-rose-600 hover:bg-rose-500"
+          className="text-white text-center w-40 capitalize px-5 h-10 rounded-md duration-300 bg-rose-600 hover:bg-rose-500"
         >
           enviar
         </button>

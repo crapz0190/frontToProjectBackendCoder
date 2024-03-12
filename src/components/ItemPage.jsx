@@ -1,10 +1,23 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from "react-router-dom";
+// import { UseProducts } from "../context/ProductsContext";
+
 const ItemPage = ({ product }) => {
+  // const { dataProductId } = UseProducts();
+  const navigate = useNavigate();
+
   const firstThumbnail =
     product.thumbnails.length > 0 ? product.thumbnails[0] : null;
 
+  const addProdToCart = (pid) => {
+    navigate(`/users/products/detail-product/${pid}`);
+  };
+
   return (
-    <div className="rounded-md p-2 m-2 flex flex-col justify-center text-slate-800">
+    <div
+      onClick={() => addProdToCart(product._id)}
+      className="rounded-md p-2 m-2 flex flex-col justify-center text-slate-800 cursor-pointer"
+    >
       <figure className="w-full">
         {firstThumbnail && (
           <img

@@ -2,12 +2,17 @@
 import { Link, useNavigate } from "react-router-dom";
 import { UseAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { userRole, logout, userId } = UseAuth();
+  const { userRole, logout, userId, userCart } = UseAuth();
 
   const [formData, setFormData] = useState(null);
+  const [cartData, setCartData] = useState(null);
 
   useEffect(() => {
     // Obtener datos guardados del almacenamiento local al montar el componente
@@ -32,6 +37,29 @@ const Navbar = () => {
   const handleOptionChange = (event) => {
     const selectedOption = event.target.value;
     navigate(selectedOption);
+  };
+
+  useEffect(() => {
+    // Obtener datos guardados del almacenamiento local al montar el componente
+    const savedData = localStorage.getItem("cart");
+    if (savedData) {
+      setCartData(JSON.parse(savedData));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userCart) {
+      localStorage.setItem("cart", JSON.stringify(userCart));
+      setCartData(userCart);
+    }
+  }, [userCart]);
+
+  const handleCart = async () => {
+    navigate(`/users/carts/${cartData}`);
+  };
+
+  const handleNotification = async () => {
+    navigate(`/users/${formData}/carts/purchase-made`);
   };
 
   return (
@@ -60,16 +88,23 @@ const Navbar = () => {
 
             <div className="w-auto flex justify-around items-center font-bold gap-x-14">
               <li className="capitalize">
-                <Link to="/admin/configure-users">usuarios</Link>
+                <Link to="/admin/configure-users">cambios a premium</Link>
               </li>
             </div>
 
-            <button
-              className="text-white text-center w-32 capitalize px-5 h-10 rounded-md duration-300 bg-red-600 hover:bg-rose-600"
+            <div className="w-auto flex justify-around items-center font-bold gap-x-14">
+              <li className="capitalize">
+                <Link to="/admin/all-users">usuarios</Link>
+              </li>
+            </div>
+
+            <div
               onClick={handleLogout}
+              className="flex gap-2 text-red-500 cursor-pointer hover:text-red-700 duration-300"
             >
-              log out
-            </button>
+              <span className="italic">logout</span>
+              <FontAwesomeIcon icon={faRightFromBracket} className="w-6 h-6" />
+            </div>
           </div>
         ) : userRole === "premium" ? (
           <div className="w-auto flex justify-around items-center font-bold gap-x-14">
@@ -88,12 +123,13 @@ const Navbar = () => {
                 </option>
               </select>
             </div>
-            <button
-              className="text-white text-center w-32 capitalize px-5 h-10 rounded-md duration-300 bg-red-600 hover:bg-rose-600"
+            <div
               onClick={handleLogout}
+              className="flex gap-2 text-red-500 cursor-pointer hover:text-red-700 duration-300"
             >
-              log out
-            </button>
+              <span className="italic">logout</span>
+              <FontAwesomeIcon icon={faRightFromBracket} className="w-6 h-6" />
+            </div>
           </div>
         ) : userRole === "user" ? (
           <div className="w-auto flex justify-around items-center font-bold gap-x-14">
@@ -103,12 +139,23 @@ const Navbar = () => {
             <li className="capitalize">
               <Link to={`/users/${formData}/documents`}>premium</Link>
             </li>
-            <button
-              className="text-white text-center w-32 capitalize px-5 h-10 rounded-md duration-300 bg-red-600 hover:bg-rose-600"
+            <FontAwesomeIcon
+              icon={faCartShopping}
+              className="w-6 h-6 text-rose-500 cursor-pointer"
+              onClick={handleCart}
+            />
+            <FontAwesomeIcon
+              icon={faEnvelope}
+              className="w-6 h-6 text-orange-500 cursor-pointer"
+              onClick={handleNotification}
+            />
+            <div
               onClick={handleLogout}
+              className="flex gap-2 text-red-500 cursor-pointer hover:text-red-700 duration-300"
             >
-              log out
-            </button>
+              <span className="italic">logout</span>
+              <FontAwesomeIcon icon={faRightFromBracket} className="w-6 h-6" />
+            </div>
           </div>
         ) : (
           <div className="w-auto flex justify-around items-center font-bold gap-x-14">

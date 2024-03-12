@@ -17,5 +17,11 @@ export const saveDocuments = (uid, obj) =>
       "Content-Type": "multipart/form-data",
     },
   });
+export const removeUserAndCart = (uid, cid) =>
+  axios.delete(`/users/${uid}/delete-cart/${cid}`);
 
 export const userChangeRole = (uid) => axios.put(`users/premium/${uid}`);
+export const inactiveUserRemover = () => axios.delete("/users/inactive-user");
+export const userById = (uid) => axios.get(`/users/${uid}`);
+export const allPurchases = (uid) =>
+  axios.get(`/users/${uid}/finalize-purchase`);

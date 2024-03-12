@@ -8,7 +8,7 @@ import { UseAuth } from "../context/AuthContext";
 
 const SettingProducts = () => {
   const { pid } = useParams();
-  const { dataUpdate } = UseProducts();
+  const { dataUpdate, deleteProductAndImages, dataProductId } = UseProducts();
   const [formData, setFormData] = useState(null);
   const [mainImage, setMainImage] = useState(null);
 
@@ -30,7 +30,6 @@ const SettingProducts = () => {
     }
   }, [dataUpdate]);
 
-  const { deleteProductAndImages, dataProductId } = UseProducts();
   const navigate = useNavigate();
 
   const { handleSubmit } = useForm();

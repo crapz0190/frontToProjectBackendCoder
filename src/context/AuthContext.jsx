@@ -10,6 +10,10 @@ import {
   saveDocuments,
   allUsersRequest,
   userChangeRole,
+  removeUserAndCart,
+  inactiveUserRemover,
+  userById,
+  allPurchases,
 } from "../api/auth";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
@@ -34,8 +38,45 @@ export const AuthProvider = ({ children }) => {
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState(null);
+  const [userCart, setUserCart] = useState(null);
+  const [userPurchase, setUserPurchase] = useState(null);
 
   // ---------- USERS ---------
+
+  const allPurchasesUser = async (uid) => {
+    try {
+      const purchase = await allPurchases(uid);
+      console.log(purchase);
+      setUserPurchase(purchase);
+    } catch (error) {
+      setErrors(error);
+    }
+  };
+
+  const userByIdFound = async (uid) => {
+    try {
+      const userFound = await userById(uid);
+      setUserId(userFound);
+    } catch (error) {
+      setErrors(error);
+    }
+  };
+
+  const inactiveUser = async () => {
+    try {
+      await inactiveUserRemover();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeUser = async (uid, cid) => {
+    try {
+      await removeUserAndCart(uid, cid);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const changeRole = async (uid) => {
     try {
@@ -81,6 +122,7 @@ export const AuthProvider = ({ children }) => {
       setUser(login.data);
       setUserRole(login.data.payload.role);
       setUserId(login.data.payload._id);
+      setUserCart(login.data.payload.cart);
 
       const encryptedRole = CryptoJS.AES.encrypt(
         login.data.payload.role,
@@ -216,6 +258,12 @@ export const AuthProvider = ({ children }) => {
         allUsersReq,
         allUser,
         changeRole,
+        removeUser,
+        inactiveUser,
+        userByIdFound,
+        userCart,
+        allPurchasesUser,
+        userPurchase,
       }}
     >
       {children}

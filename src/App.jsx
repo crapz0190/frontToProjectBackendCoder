@@ -19,103 +19,125 @@ import ConfigureImages from "./pages/ConfigureImages";
 import UserDocuments from "./pages/UserDocuments";
 import ConfigureUsers from "./pages/ConfigureUsers";
 import ProtectedRoutePremium from "./pages/ProtectedRoutePremium";
+import AllUsers from "./pages/AllUsers";
+import DetailProduct from "./components/DetailProduct";
+import { CartProvider } from "./context/CartsContext";
+import DetailCart from "./components/DetailCart";
+import AllPurchases from "./components/AllPurchases";
 
 function App() {
   return (
     <AuthProvider>
       <ProductProvider>
-        <BrowserRouter>
-          <main className="flex justify-center items-center">
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<h1 className="pt-40">Home Page</h1>} />
-              <Route
-                path="/users/cuenta-activada"
-                element={<h1 className="pt-40">Cuenta Activada</h1>}
-              />
-              <Route
-                path="/users/error"
-                element={<h1 className="pt-40">La cuenta ya está activada</h1>}
-              />
-              <Route path="/users/login" element={<LoginPage />} />
-              <Route path="/users/signup" element={<RegisterPage />} />
-              <Route
-                path="/users/verified-account/:token"
-                element={<VerifiedAccount />}
-              />
-              <Route
-                path="/users/recover-password"
-                element={<RecoverPassword />}
-              />
-              <Route
-                path="/users/:uid/recover-password/:token"
-                element={<RecoverPwdToken />}
-              />
-              <Route path="/unauthorized" element={<Unauthorized />} />
+        <CartProvider>
+          <BrowserRouter>
+            <main className="flex justify-center items-center">
+              <Navbar />
+              <Routes>
+                <Route
+                  path="/"
+                  element={<h1 className="pt-40">Home Page</h1>}
+                />
+                <Route
+                  path="/users/cuenta-activada"
+                  element={<h1 className="pt-40">Cuenta Activada</h1>}
+                />
+                <Route
+                  path="/users/error"
+                  element={
+                    <h1 className="pt-40">La cuenta ya está activada</h1>
+                  }
+                />
+                <Route path="/users/login" element={<LoginPage />} />
+                <Route path="/users/signup" element={<RegisterPage />} />
+                <Route
+                  path="/users/verified-account/:token"
+                  element={<VerifiedAccount />}
+                />
+                <Route
+                  path="/users/recover-password"
+                  element={<RecoverPassword />}
+                />
+                <Route
+                  path="/users/:uid/recover-password/:token"
+                  element={<RecoverPwdToken />}
+                />
+                <Route path="/unauthorized" element={<Unauthorized />} />
 
-              <Route element={<ProtectedRouteAdmin />}>
-                <Route path="/admin/products" element={<ProductsPage />} />
-                <Route
-                  path="/admin/products/add-products"
-                  element={<AddProducts />}
-                />
-                <Route
-                  path="/admin/products/update-products"
-                  element={<UpdateProducts />}
-                />
-                <Route
-                  path="/admin/products/configure-product/:pid"
-                  element={<SettingProducts />}
-                />
-                <Route
-                  path="/admin/products/update-data-product-by-id/:pid"
-                  element={<UpdateDataProducId />}
-                />
-                <Route
-                  path="/admin/products/configure-images/:pid"
-                  element={<ConfigureImages />}
-                />
-                <Route
-                  path="/admin/configure-users"
-                  element={<ConfigureUsers />}
-                />
-              </Route>
-              <Route element={<ProtectedRoutePremium />}>
-                <Route path="/premium/products" element={<ProductsPage />} />
-                <Route
-                  path="/premium/products/add-products"
-                  element={<AddProducts />}
-                />
-                <Route
-                  path="/premium/products/update-products"
-                  element={<UpdateProducts />}
-                />
-                <Route
-                  path="/premium/products/configure-product/:pid"
-                  element={<SettingProducts />}
-                />
-                <Route
-                  path="/premium/products/update-data-product-by-id/:pid"
-                  element={<UpdateDataProducId />}
-                />
-                <Route
-                  path="/premium/products/configure-images/:pid"
-                  element={<ConfigureImages />}
-                />
-              </Route>
-              <Route element={<ProtectedRouteUser />}>
-                <Route path="/users/products" element={<ProductsPage />} />
-                <Route
-                  path="/users/:uid/documents"
-                  element={<UserDocuments />}
-                />
-              </Route>
-            </Routes>
-          </main>
-          <footer className="h-80 text-slate-100 absolute bottom-2/2 left-0 right-0">
-            pie de pagina
-          </footer>
-        </BrowserRouter>
+                <Route element={<ProtectedRouteAdmin />}>
+                  <Route path="/admin/products" element={<ProductsPage />} />
+                  <Route
+                    path="/admin/products/add-products"
+                    element={<AddProducts />}
+                  />
+                  <Route
+                    path="/admin/products/update-products"
+                    element={<UpdateProducts />}
+                  />
+                  <Route
+                    path="/admin/products/configure-product/:pid"
+                    element={<SettingProducts />}
+                  />
+                  <Route
+                    path="/admin/products/update-data-product-by-id/:pid"
+                    element={<UpdateDataProducId />}
+                  />
+                  <Route
+                    path="/admin/products/configure-images/:pid"
+                    element={<ConfigureImages />}
+                  />
+                  <Route
+                    path="/admin/configure-users"
+                    element={<ConfigureUsers />}
+                  />
+                  <Route path="/admin/all-users" element={<AllUsers />} />
+                </Route>
+                <Route element={<ProtectedRoutePremium />}>
+                  <Route path="/premium/products" element={<ProductsPage />} />
+                  <Route
+                    path="/premium/products/add-products"
+                    element={<AddProducts />}
+                  />
+                  <Route
+                    path="/premium/products/update-products"
+                    element={<UpdateProducts />}
+                  />
+                  <Route
+                    path="/premium/products/configure-product/:pid"
+                    element={<SettingProducts />}
+                  />
+                  <Route
+                    path="/premium/products/update-data-product-by-id/:pid"
+                    element={<UpdateDataProducId />}
+                  />
+                  <Route
+                    path="/premium/products/configure-images/:pid"
+                    element={<ConfigureImages />}
+                  />
+                </Route>
+                <Route element={<ProtectedRouteUser />}>
+                  <Route path="/users/products" element={<ProductsPage />} />
+                  <Route
+                    path="/users/:uid/documents"
+                    element={<UserDocuments />}
+                  />
+                  <Route
+                    path="/users/products/detail-product/:pid"
+                    element={<DetailProduct />}
+                  />
+                  <Route path="/users/carts/:cid" element={<DetailCart />} />
+                  <Route
+                    path="/users/:uid/carts/purchase-made"
+                    element={<AllPurchases />}
+                  />
+                </Route>
+              </Routes>
+            </main>
+            <footer className="h-80 text-slate-100 absolute bottom-2/2 left-0 right-0">
+              pie de pagina
+            </footer>
+          </BrowserRouter>
+        </CartProvider>
       </ProductProvider>
     </AuthProvider>
   );
