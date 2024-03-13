@@ -46,7 +46,6 @@ export const AuthProvider = ({ children }) => {
   const allPurchasesUser = async (uid) => {
     try {
       const purchase = await allPurchases(uid);
-      console.log(purchase);
       setUserPurchase(purchase);
     } catch (error) {
       setErrors(error);
